@@ -28,6 +28,9 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# images hosted on Cloudinary — not needed in repo
+/public/images/
+
 # vercel
 .vercel
 
