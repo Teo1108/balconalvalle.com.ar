@@ -7,7 +7,7 @@ const CABINS = [
   {
     name: 'Cabaña 1',
     image:
-      '/images/cabania1.jpg',
+      'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/cabania1_ohy02m',
     capacity: 4,
     beds: 3,
     amenities: ['Wi-Fi', 'Aire frio/calor', 'Cocina equipada', 'Cochera', 'Terraza'],
@@ -15,7 +15,7 @@ const CABINS = [
   {
     name: 'Cabaña 2',
     image:
-      '/images/cabania2.jpg',
+      'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/cabania2_h2qmrf',
     capacity: 6,
     beds: 4,
     amenities: ['Wi-Fi', 'Aire frio/calor', 'Cocina equipada', 'Cochera', 'Terraza'],
