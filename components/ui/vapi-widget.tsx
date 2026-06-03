@@ -16,6 +16,13 @@ type Message = {
   isPartial?: boolean;
 };
 
+interface VapiMessage {
+  type: string;
+  role?: 'user' | 'assistant';
+  transcript?: string;
+  transcriptType?: 'partial' | 'final';
+}
+
 export default function VapiWidget() {
   const [widgetMode, setWidgetMode] = useState<WidgetMode>('idle');
   const [callStatus, setCallStatus] = useState<CallStatus>('idle');
@@ -47,9 +54,10 @@ export default function VapiWidget() {
       setWidgetMode('idle');
     });
 
-    vapi.on('message', (msg: any) => {
+    vapi.on('message', (msg: VapiMessage) => {
       if (msg.type === 'transcript') {
         const { role, transcript, transcriptType } = msg;
+        if (!role || !transcript) return;
 
         if (transcriptType === 'partial') {
           setPartialTranscript(transcript);
