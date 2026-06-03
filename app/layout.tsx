@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description:
     'Complejo de cabañas rodeado de naturaleza en el valle. Disfrutá de vistas únicas, aire puro y total tranquilidad.',
   icons: {
-    icon: '/public/images/BalconAlValle.ico',
+    icon: 'https://res.cloudinary.com/davjgtfy0/image/upload/BalconAlValle_ujkc28.ico',
   },
   openGraph: {
     title: 'Balcon al Valle Grande',
