@@ -5,7 +5,7 @@ import CabinsSection from '@/components/sections/cabins-section';
 import GallerySection from '@/components/sections/gallery-section';
 import LocationSection from '@/components/sections/location-section';
 import ContactSection from '@/components/sections/contact-section';
-import VapiButton from '@/components/ui/vapi-button';
+import VapiWidget from '@/components/ui/vapi-widget';
 
 export default function Home() {
   return (
@@ -17,7 +17,7 @@ export default function Home() {
       <GallerySection />
       <LocationSection />
       <ContactSection />
-      <VapiButton />
+      <VapiWidget />
     </main>
   );
 }
