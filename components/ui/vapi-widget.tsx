@@ -216,7 +216,7 @@ export default function VapiWidget() {
       {(widgetMode === 'voice' || widgetMode === 'chat') && (
         <div className="bg-white rounded-2xl shadow-2xl flex flex-col w-80 h-96 overflow-hidden">
           {/* Header */}
-          <div className="bg-valley-brown text-white p-4 flex items-center justify-between">
+          <div className="bg-valle-brown text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-lg">🤖</span>
               <span className="font-semibold">Ellie</span>
@@ -238,7 +238,7 @@ export default function VapiWidget() {
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-valle-cream/30">
             {messages.length === 0 && !partialTranscript && (
-              <div className="flex items-center justify-center h-full text-valley-dark/50 text-sm text-center">
+              <div className="flex items-center justify-center h-full text-valle-dark/50 text-sm text-center">
                 {callStatus === 'connecting'
                   ? 'Conectando con Ellie...'
                   : 'Iniciá la conversación'}
