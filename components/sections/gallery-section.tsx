@@ -7,7 +7,9 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-async function getCloudinaryPhotos(folder: string): Promise<string[]> {
+type AllowedFolder = 'cabania1' | 'cabania2';
+
+async function getCloudinaryPhotos(folder: AllowedFolder): Promise<string[]> {
   try {
     const result = await cloudinary.search
       .expression(`folder:${folder}`)

@@ -3,9 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Vapi from '@vapi-ai/web';
 import { Mic, MessageCircle, PhoneOff, Send, X, Loader2 } from 'lucide-react';
-
-const VAPI_PUBLIC_KEY = '77ed4e9c-4c57-4c5f-9ca2-d3482da6dcf3';
-const ASSISTANT_ID = 'a41bb4c0-7a79-4789-b26f-7dfcc86ce3f6';
+import { VAPI_PUBLIC_KEY, VAPI_ASSISTANT_ID as ASSISTANT_ID } from '@/lib/vapi-config';
 
 type WidgetMode = 'idle' | 'selecting' | 'voice' | 'chat';
 type CallStatus = 'idle' | 'connecting' | 'active';
@@ -292,7 +290,7 @@ export default function VapiWidget() {
                   placeholder="Escribí tu mensaje..."
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
-                  onKeyPress={(e) => {
+                  onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       handleSendChat();
                     }

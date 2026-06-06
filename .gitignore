@@ -26,7 +26,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*.local
+.env
+.env.*
+!.env.example
+*.key
 
 # images hosted on Cloudinary — not needed in repo
 /public/images/

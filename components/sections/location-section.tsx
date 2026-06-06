@@ -14,6 +14,7 @@ export default function LocationSection() {
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
+            sandbox="allow-scripts allow-same-origin"
           />
         </div>
         <div className="w-16 h-16 rounded-full bg-valle-brown/10 flex items-center justify-center mx-auto mb-6">
