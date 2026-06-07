@@ -26,7 +26,7 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.daily.co",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.daily.co blob:",
               "connect-src 'self' https://*.vapi.ai wss://*.vapi.ai https://*.daily.co wss://*.daily.co https://res.cloudinary.com https://*.sentry.io",
               "img-src 'self' data: https://res.cloudinary.com https://images.unsplash.com",
               "frame-src https://www.google.com https://*.daily.co",
