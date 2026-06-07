@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Vapi from '@vapi-ai/web';
-import { Mic, MessageCircle, PhoneOff, Send, X, Loader2 } from 'lucide-react';
+import { Mic, MessageCircle, Phone, PhoneOff, Send, X, Loader2 } from 'lucide-react';
 import { VAPI_PUBLIC_KEY, VAPI_ASSISTANT_ID as ASSISTANT_ID } from '@/lib/vapi-config';
 
 type WidgetMode = 'idle' | 'selecting' | 'voice' | 'chat';
@@ -185,7 +185,7 @@ export default function VapiWidget() {
             {callStatus === 'connecting' ? (
               <Loader2 size={28} className="text-white animate-spin" />
             ) : (
-              <MessageCircle size={28} className="text-white" />
+              <Phone size={28} className="text-white" />
             )}
           </button>
         </>
