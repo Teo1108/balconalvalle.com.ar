@@ -71,6 +71,9 @@ export function useVapiConversation(
     vapi.on('error', () => {
       setCallStatus('idle');
       setMode('selecting');
+      setMessages([]);
+      setPartialTranscript('');
+      onCallEndRef.current?.();
     });
 
     vapi.on('message', (msg: VapiMessage) => {
