@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Mic, MessageCircle, PhoneOff, Send } from 'lucide-react';
+import { Mic, MessageSquare, PhoneOff, Send, Bot } from 'lucide-react';
 import { useVapiConversation } from '@/hooks/use-vapi-conversation';
 
 export default function EllieHeroPanel() {
@@ -31,44 +31,50 @@ export default function EllieHeroPanel() {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-2xl flex flex-col w-full max-w-md h-[28rem] overflow-hidden">
-      <div className="bg-valle-brown text-white p-4 flex items-center gap-2">
-        <span className="text-lg">🤖</span>
-        <span className="font-semibold">Ellie</span>
+    <div className="bg-ellie-surface-container-lowest rounded-2xl shadow-2xl border border-ellie-outline-variant/30 flex flex-col w-full max-w-md h-[30rem] overflow-hidden">
+      <div className="bg-ellie-primary-container px-6 py-4 flex items-center gap-3">
+        <div className="w-8 h-8 rounded-full bg-ellie-surface-container-highest flex items-center justify-center">
+          <Bot size={18} className="text-ellie-primary-container" />
+        </div>
+        <span className="text-ellie-on-primary-container font-ellie-serif text-sm uppercase tracking-widest">
+          Ellie
+        </span>
         {isSpeaking && mode === 'voice' && (
-          <span className="ml-2 text-xs bg-red-500 px-2 py-1 rounded-full animate-pulse">
+          <span className="ml-auto text-xs bg-red-500 text-white px-2 py-1 rounded-full animate-pulse">
             Hablando...
           </span>
         )}
       </div>
 
       {mode === 'selecting' && (
-        <div className="flex-1 flex flex-col items-center justify-center gap-4 p-6 bg-valle-cream/30">
-          <p className="text-base font-semibold text-valle-dark text-center">
+        <div className="flex-1 flex flex-col items-center justify-center gap-6 p-8 text-center">
+          <p className="font-ellie-serif text-xl text-ellie-primary">
             ¿Cómo querés hablar con Ellie?
           </p>
-          <button
-            onClick={startVoice}
-            className="w-full flex items-center justify-center gap-2 bg-valle-brown hover:bg-valle-dark text-white font-semibold py-3 rounded-lg transition-colors"
-          >
-            <Mic size={18} />
-            Hablar con voz
-          </button>
-          <button
-            onClick={startChat}
-            className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors"
-          >
-            <MessageCircle size={18} />
-            Chatear por texto
-          </button>
+          <div className="w-full space-y-3">
+            <button
+              onClick={startVoice}
+              className="w-full flex items-center justify-center gap-3 bg-ellie-primary text-white py-3.5 rounded-xl font-semibold hover:opacity-90 transition-all"
+            >
+              <Mic size={18} />
+              Hablar con voz
+            </button>
+            <button
+              onClick={startChat}
+              className="w-full flex items-center justify-center gap-3 bg-ellie-surface-container-high text-ellie-on-surface-variant py-3.5 rounded-xl font-semibold hover:opacity-90 transition-all"
+            >
+              <MessageSquare size={18} />
+              Chatear por texto
+            </button>
+          </div>
         </div>
       )}
 
       {(mode === 'voice' || mode === 'chat') && (
         <>
-          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-valle-cream/30">
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-ellie-surface-low">
             {messages.length === 0 && !partialTranscript && (
-              <div className="flex items-center justify-center h-full text-valle-dark/50 text-sm text-center">
+              <div className="flex items-center justify-center h-full text-ellie-on-surface-variant text-sm text-center">
                 {callStatus === 'connecting'
                   ? 'Conectando con Ellie...'
                   : 'Iniciá la conversación'}
@@ -85,8 +91,8 @@ export default function EllieHeroPanel() {
                 <div
                   className={`max-w-xs px-4 py-2 rounded-lg ${
                     msg.role === 'user'
-                      ? 'bg-valle-brown text-white rounded-br-none'
-                      : 'bg-white text-valle-dark rounded-bl-none shadow-sm'
+                      ? 'bg-ellie-primary text-white rounded-br-none'
+                      : 'bg-white text-ellie-on-surface rounded-bl-none shadow-sm'
                   }`}
                 >
                   <p className="text-sm leading-relaxed">{msg.text}</p>
@@ -96,7 +102,7 @@ export default function EllieHeroPanel() {
 
             {partialTranscript && (
               <div className="flex justify-end">
-                <div className="max-w-xs px-4 py-2 rounded-lg bg-valle-brown/70 text-white rounded-br-none italic text-sm">
+                <div className="max-w-xs px-4 py-2 rounded-lg bg-ellie-primary/70 text-white rounded-br-none italic text-sm">
                   {partialTranscript}
                 </div>
               </div>
@@ -105,7 +111,7 @@ export default function EllieHeroPanel() {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="border-t border-valle-sand/30 p-3 bg-white">
+          <div className="border-t border-ellie-outline-variant p-3 bg-white">
             {mode === 'chat' && (
               <div className="flex gap-2 mb-3">
                 <input
@@ -118,12 +124,12 @@ export default function EllieHeroPanel() {
                       handleSendChat();
                     }
                   }}
-                  className="flex-1 px-3 py-2 border border-valle-sand rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-valle-brown"
+                  className="flex-1 px-3 py-2 border border-ellie-outline-variant rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ellie-primary"
                 />
                 <button
                   onClick={handleSendChat}
                   disabled={!chatInput.trim()}
-                  className="bg-green-600 hover:bg-green-700 disabled:bg-green-300 text-white p-2 rounded-lg transition-colors"
+                  className="bg-ellie-secondary hover:opacity-90 disabled:opacity-40 text-white p-2 rounded-lg transition-colors"
                   aria-label="Enviar"
                 >
                   <Send size={18} />
@@ -132,7 +138,7 @@ export default function EllieHeroPanel() {
             )}
             <button
               onClick={endCall}
-              className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-lg transition-colors"
             >
               <PhoneOff size={18} />
               Finalizar llamada

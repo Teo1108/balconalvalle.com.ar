@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
-import EllieHeader from '@/components/ellie/ellie-header';
+import EllieNavbar from '@/components/ellie/ellie-navbar';
 import EllieHero from '@/components/ellie/ellie-hero';
 import EllieCapabilities from '@/components/ellie/ellie-capabilities';
 import EllieHowItWorks from '@/components/ellie/ellie-how-it-works';
-import EllieClosing from '@/components/ellie/ellie-closing';
+import EllieMountainBanner from '@/components/ellie/ellie-mountain-banner';
+import EllieFooter from '@/components/ellie/ellie-footer';
 
 export const metadata: Metadata = {
   title: 'Hablá con Ellie — Recepcionista 24/7 | Balcon al Valle Grande',
@@ -20,11 +21,12 @@ export const metadata: Metadata = {
 export default function EllieLandingPage() {
   return (
     <main>
-      <EllieHeader />
+      <EllieNavbar />
       <EllieHero />
       <EllieCapabilities />
       <EllieHowItWorks />
-      <EllieClosing />
+      <EllieMountainBanner />
+      <EllieFooter />
     </main>
   );
 }
