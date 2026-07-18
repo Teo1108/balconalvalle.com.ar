@@ -8,6 +8,7 @@ const CABINS = [
     name: 'Cabaña 1',
     image:
       'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/cabania1_ohy02m',
+    alt: 'Cabaña 1 en Valle Grande, San Rafael - vista exterior',
     capacity: 4,
     beds: 3,
     amenities: ['Wi-Fi', 'Aire frio/calor', 'Cocina equipada', 'Cochera', 'Terraza'],
@@ -16,6 +17,7 @@ const CABINS = [
     name: 'Cabaña 2',
     image:
       'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/cabania2_h2qmrf',
+    alt: 'Cabaña 2 en Valle Grande, San Rafael - vista exterior',
     capacity: 6,
     beds: 4,
     amenities: ['Wi-Fi', 'Aire frio/calor', 'Cocina equipada', 'Cochera', 'Terraza'],
@@ -24,6 +26,7 @@ const CABINS = [
     name: 'En construccion',
     image:
       'https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?q=80&w=800&auto=format&fit=crop',
+    alt: 'Próxima cabaña en construcción - imagen ilustrativa',
     capacity: 2,
     beds: 1,
     amenities: ['Wi-Fi', 'Estufa', 'Cocina completa', 'Vista al valle'],
@@ -55,7 +58,7 @@ export default function CabinsSection() {
               <div className="relative h-56">
                 <Image
                   src={cabin.image}
-                  alt={cabin.name}
+                  alt={cabin.alt}
                   fill
                   className="object-cover"
                 />

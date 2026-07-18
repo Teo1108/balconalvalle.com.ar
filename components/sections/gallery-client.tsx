@@ -56,7 +56,7 @@ export default function GalleryClient({ cabania1, cabania2 }: Props) {
             >
               <Image
                 src={src}
-                alt={`Foto ${i + 1}`}
+                alt={`Foto ${i + 1} de la ${active} en Valle Grande, San Rafael`}
                 fill
                 loading="lazy"
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
