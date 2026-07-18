@@ -304,24 +304,24 @@ const ScrollExpandMedia = ({
                 </div>
               </div>
 
-              <div
+              <h1
                 className={`flex items-center justify-center text-center gap-4 w-full relative z-10 transition-none flex-col ${
                   textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
                 }`}
               >
-                <motion.h2
-                  className='text-4xl md:text-5xl lg:text-6xl font-bold text-blue-200 transition-none'
+                <motion.span
+                  className='block text-4xl md:text-5xl lg:text-6xl font-bold text-blue-200 transition-none'
                   style={{ transform: `translateX(-${textTranslateX}vw)` }}
                 >
                   {firstWord}
-                </motion.h2>
-                <motion.h2
-                  className='text-4xl md:text-5xl lg:text-6xl font-bold text-center text-blue-200 transition-none'
+                </motion.span>
+                <motion.span
+                  className='block text-4xl md:text-5xl lg:text-6xl font-bold text-center text-blue-200 transition-none'
                   style={{ transform: `translateX(${textTranslateX}vw)` }}
                 >
                   {restOfTitle}
-                </motion.h2>
-              </div>
+                </motion.span>
+              </h1>
             </div>
 
             <motion.section

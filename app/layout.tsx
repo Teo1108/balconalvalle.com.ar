@@ -10,15 +10,17 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Balcon al Valle Grande',
+  title: 'Cabañas en Valle Grande, San Rafael | Balcón al Valle',
   description:
-    'Complejo de cabañas rodeado de naturaleza en el valle. Disfrutá de vistas únicas, aire puro y total tranquilidad.',
+    'Cabañas en Valle Grande, San Rafael, Mendoza. Alojamiento rural para 2 a 6 personas rodeado de montaña y bosque nativo. Reservá tu escapada de desconexión.',
   icons: {
     icon: 'https://res.cloudinary.com/davjgtfy0/image/upload/BalconAlValle_ujkc28.ico',
   },
   openGraph: {
-    title: 'Balcon al Valle Grande',
-    description: 'Complejo de cabañas rodeado de naturaleza en el valle.',
+    title: 'Cabañas en Valle Grande, San Rafael | Balcón al Valle',
+    description:
+      'Alojamiento rural para 2 a 6 personas en Valle Grande, San Rafael. Wi-Fi, cocina equipada, terrazas y desconexión total en la montaña.',
+    url: 'https://balconalvalle.com.ar',
     type: 'website',
   },
 };

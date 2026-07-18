@@ -6,8 +6,8 @@ export default function HeroSection() {
       mediaType="image"
       mediaSrc="https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/hero_g2iqiz"
       bgImageSrc="https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/hero-bg_fuyzqg"
-      title="Balcon al Valle"
-      date="Valle Grande"
+      title="Cabañas Valle Grande"
+      date="San Rafael, Mendoza"
       scrollToExpand="Scroll para descubrir"
       textBlend
     />
