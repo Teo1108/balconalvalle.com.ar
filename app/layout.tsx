@@ -22,6 +22,14 @@ export const metadata: Metadata = {
       'Alojamiento rural para 2 a 6 personas en Valle Grande, San Rafael. Wi-Fi, cocina equipada, terrazas y desconexión total en la montaña.',
     url: 'https://balconalvalle.com.ar',
     type: 'website',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/hero_g2iqiz',
+        width: 1200,
+        height: 630,
+        alt: 'Cabañas Balcón al Valle en Valle Grande, San Rafael',
+      },
+    ],
   },
 };
 
