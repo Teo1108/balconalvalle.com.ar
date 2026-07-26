@@ -4,6 +4,7 @@ import AboutSection from '@/components/sections/about-section';
 import CabinsSection from '@/components/sections/cabins-section';
 import GallerySection from '@/components/sections/gallery-section';
 import LocationSection from '@/components/sections/location-section';
+import FaqSection from '@/components/sections/faq-section';
 import ContactSection from '@/components/sections/contact-section';
 import VapiWidget from '@/components/ui/vapi-widget';
 import { SITE_CONFIG } from '@/lib/config';
@@ -55,6 +56,7 @@ export default function Home() {
       <CabinsSection />
       <GallerySection />
       <LocationSection />
+      <FaqSection />
       <ContactSection />
       <VapiWidget />
     </main>
