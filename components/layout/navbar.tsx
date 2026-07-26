@@ -33,7 +33,7 @@ export default function Navbar() {
       }`}
     >
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <a href="#" className="text-xl font-bold text-valle-dark">
+        <a href="/" className="text-xl font-bold text-valle-dark">
           Balcon al Valle
         </a>
 

@@ -2,12 +2,17 @@ const FAQS = [
   {
     question: '¿Dónde están ubicadas las cabañas?',
     answer:
-      'Balcón al Valle está en Valle Grande, San Rafael, Mendoza, rodeado de montaña y bosque nativo. Compartimos la ubicación exacta al confirmar la reserva.',
+      'Balcón al Valle está en el distrito de Valle Grande, dentro del Cañón del Atuel, a 15 minutos del centro de San Rafael, Mendoza, con acceso privado al Río Atuel. Compartimos la ubicación exacta al confirmar la reserva.',
   },
   {
     question: '¿Cuántas personas pueden alojarse?',
     answer:
       'Tenemos cabañas para distintos grupos: la Cabaña 1 aloja hasta 4 personas y la Cabaña 2 hasta 6 personas.',
+  },
+  {
+    question: '¿Qué actividades hay cerca?',
+    answer:
+      'Estamos en plena zona turística del Cañón del Atuel: rafting, tirolesa y trekking a pocos minutos, además del acceso privado al río desde la cabaña.',
   },
   {
     question: '¿Qué comodidades tienen las cabañas?',

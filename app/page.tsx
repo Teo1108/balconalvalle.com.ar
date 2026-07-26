@@ -14,10 +14,11 @@ const LODGING_SCHEMA = {
   '@type': 'LodgingBusiness',
   name: SITE_CONFIG.name,
   description:
-    'Cabañas en Valle Grande, San Rafael, Mendoza. Alojamiento rural para 2 a 6 personas rodeado de montaña y bosque nativo.',
+    'Cabañas en Valle Grande, dentro del Cañón del Atuel, San Rafael, Mendoza. Alojamiento rural para 2 a 6 personas con acceso privado al Río Atuel, rodeado de montaña y bosque nativo.',
   url: 'https://balconalvalle.com.ar',
   image:
     'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/hero_g2iqiz',
+  dateModified: new Date().toISOString().split('T')[0],
   telephone: `+${SITE_CONFIG.whatsapp.number}`,
   address: {
     '@type': 'PostalAddress',
@@ -37,6 +38,7 @@ const LODGING_SCHEMA = {
     'Cochera',
     'Terraza',
     'Aire frío/calor',
+    'Acceso privado al Río Atuel',
   ].map((name) => ({
     '@type': 'LocationFeatureSpecification',
     name,
