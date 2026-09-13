@@ -32,7 +32,7 @@ const nextConfig = {
               "frame-src https://www.google.com https://*.daily.co",
               "style-src 'self' 'unsafe-inline'",
               "font-src 'self' data:",
-              "media-src 'self' https://*.daily.co",
+              "media-src 'self' https://*.daily.co https://res.cloudinary.com",
             ].join('; '),
           },
         ],

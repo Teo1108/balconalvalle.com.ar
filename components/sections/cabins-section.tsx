@@ -3,11 +3,23 @@ import Image from 'next/image';
 import { Users, Bed, Wifi, Flame, MessageCircle, Check } from 'lucide-react';
 import { whatsappUrl } from '@/lib/config';
 
-const CABINS = [
+type Cabin = {
+  name: string;
+  image: string;
+  video?: string;
+  alt: string;
+  capacity: number;
+  beds: number;
+  amenities: string[];
+};
+
+const CABINS: Cabin[] = [
   {
     name: 'Cabaña 1',
     image:
       'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/cabania1_ohy02m',
+    video:
+      'https://res.cloudinary.com/davjgtfy0/video/upload/q_auto/v1789337022/cabania-1-2_uhkmsn.mp4',
     alt: 'Cabaña 1 en Valle Grande, San Rafael - vista exterior',
     capacity: 4,
     beds: 3,
@@ -56,12 +68,24 @@ export default function CabinsSection() {
               className="rounded-2xl overflow-hidden shadow-lg border border-valle-sand/30 flex flex-col"
             >
               <div className="relative h-56">
-                <Image
-                  src={cabin.image}
-                  alt={cabin.alt}
-                  fill
-                  className="object-cover"
-                />
+                {cabin.video ? (
+                  <video
+                    src={cabin.video}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 h-full w-full object-cover"
+                    aria-label={cabin.alt}
+                  />
+                ) : (
+                  <Image
+                    src={cabin.image}
+                    alt={cabin.alt}
+                    fill
+                    className="object-cover"
+                  />
+                )}
               </div>
               <div className="p-6 flex flex-col flex-1 bg-valle-cream">
                 <h3 className="text-2xl font-bold text-valle-dark mb-3">
