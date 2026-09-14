@@ -25,7 +25,7 @@ function sortByDisplayName(photos: CloudinaryResource[]): string[] {
 async function getCloudinaryPhotos(folder: AllowedFolder): Promise<string[]> {
   try {
     const result = await cloudinary.search
-      .expression(`folder:${folder}`)
+      .expression(`folder:${folder} AND resource_type:image`)
       .sort_by('display_name', 'asc')
       .max_results(100)
       .execute();
