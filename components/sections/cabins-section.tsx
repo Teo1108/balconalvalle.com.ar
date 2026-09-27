@@ -7,6 +7,7 @@ type Cabin = {
   name: string;
   image: string;
   video?: string;
+  poster?: string;
   alt: string;
   capacity: number;
   beds: number;
@@ -20,6 +21,8 @@ const CABINS: Cabin[] = [
       'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/cabania1_ohy02m',
     video:
       'https://res.cloudinary.com/davjgtfy0/video/upload/q_auto/v1789336844/vcabania1.mp4',
+    poster:
+      'https://res.cloudinary.com/davjgtfy0/video/upload/so_1,q_auto/v1789336844/vcabania1.jpg',
     alt: 'Cabaña 1 en Valle Grande, San Rafael - vista exterior',
     capacity: 4,
     beds: 3,
@@ -73,6 +76,7 @@ export default function CabinsSection() {
                 {cabin.video ? (
                   <video
                     src={cabin.video}
+                    poster={cabin.poster}
                     autoPlay
                     muted
                     loop
