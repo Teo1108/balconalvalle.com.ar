@@ -6,7 +6,7 @@ export default function EllieMountainBanner() {
       <div className="w-full aspect-[21/9] rounded-2xl overflow-hidden relative">
         <div className="absolute inset-0 bg-gradient-to-t from-ellie-primary/50 to-transparent z-10" />
         <Image
-          src="https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/hero-bg_fuyzqg"
+          src="https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/v1790533721/bavg-home.jpg"
           alt="Vista panorámica del valle al amanecer"
           fill
           className="object-cover"

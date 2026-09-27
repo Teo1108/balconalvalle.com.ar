@@ -5,7 +5,7 @@ export default function HeroSection() {
     <ScrollExpandMedia
       mediaType="image"
       mediaSrc="https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/hero_g2iqiz"
-      bgImageSrc="https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/hero-bg_fuyzqg"
+      bgImageSrc="https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/v1790533721/bavg-home.jpg"
       title="Cabañas Valle Grande"
       date="San Rafael, Mendoza"
       scrollToExpand="Scroll para descubrir"
