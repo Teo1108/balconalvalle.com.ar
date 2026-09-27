@@ -22,7 +22,7 @@ const CABINS: Cabin[] = [
     video:
       'https://res.cloudinary.com/davjgtfy0/video/upload/q_auto/v1789336844/vcabania1.mp4',
     poster:
-      'https://res.cloudinary.com/davjgtfy0/video/upload/so_1,q_auto/v1789336844/vcabania1.jpg',
+      'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/v1790522232/cab1-principal.jpg',
     alt: 'Cabaña 1 en Valle Grande, San Rafael - vista exterior',
     capacity: 4,
     beds: 3,
