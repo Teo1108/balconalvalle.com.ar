@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/hero_g2iqiz',
+        url: 'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1790534583/BAVG-homemini.jpg',
         width: 1200,
         height: 630,
         alt: 'Cabañas Balcón al Valle en Valle Grande, San Rafael',
