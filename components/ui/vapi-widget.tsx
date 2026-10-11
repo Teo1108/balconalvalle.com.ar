@@ -16,6 +16,7 @@ export default function VapiWidget() {
     messages,
     partialTranscript,
     isSpeaking,
+    isThinking,
     blockedMessage,
     startVoice,
     startChat,
@@ -161,6 +162,14 @@ export default function VapiWidget() {
               </div>
             )}
 
+            {isThinking && (
+              <div className="flex justify-start">
+                <div className="px-4 py-2 rounded-lg bg-white text-valle-dark rounded-bl-none shadow-sm text-sm italic opacity-70">
+                  Ellie está escribiendo…
+                </div>
+              </div>
+            )}
+
             <div ref={messagesEndRef} />
           </div>
 
@@ -194,7 +203,7 @@ export default function VapiWidget() {
               className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg transition-colors"
             >
               <PhoneOff size={18} />
-              Finalizar llamada
+              {mode === 'chat' ? 'Terminar chat' : 'Finalizar llamada'}
             </button>
           </div>
         </div>

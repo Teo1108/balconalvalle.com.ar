@@ -31,12 +31,17 @@ export interface UseVapiConversationResult {
   messages: ConversationMessage[];
   partialTranscript: string;
   isSpeaking: boolean;
+  isThinking: boolean;
   blockedMessage: string | null;
   startVoice: () => void;
   startChat: () => void;
   sendMessage: (content: string) => void;
   endCall: () => void;
 }
+
+const VAPI_CHAT_URL = 'https://api.vapi.ai/chat/web';
+const CHAT_ERROR_MESSAGE =
+  'Perdón, tuve un problema para responder. Probá de nuevo o escribinos por WhatsApp.';
 
 const RATE_LIMIT_MESSAGE =
   'Estamos recibiendo muchas solicitudes desde tu conexión. Probá de nuevo en un rato.';
@@ -52,10 +57,12 @@ export function useVapiConversation(
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [partialTranscript, setPartialTranscript] = useState('');
   const [blockedMessage, setBlockedMessage] = useState<string | null>(null);
+  const [isThinking, setIsThinking] = useState(false);
 
   const vapiRef = useRef<Vapi | null>(null);
-  const modeRef = useRef<ConversationMode>('selecting');
-  modeRef.current = mode;
+  // Chat de texto: usa la API de chat de Vapi (sin llamada, sin micrófono ni voz).
+  const chatTokenRef = useRef<string | null>(null);
+  const chatSessionRef = useRef<string | null>(null);
   const onCallEndRef = useRef(onCallEnd);
   onCallEndRef.current = onCallEnd;
 
@@ -68,13 +75,6 @@ export function useVapiConversation(
   function attachListeners(vapi: Vapi) {
     vapi.on('call-start', () => {
       setCallStatus('active');
-      // El chat es una llamada con micrófono y voz de Ellie silenciados. Se
-      // silencia recién acá: antes de 'call-start' el SDK ignora setMuted/send
-      // sin avisar y la conversación queda como llamada de voz.
-      if (modeRef.current === 'chat') {
-        vapi.setMuted(true);
-        vapi.send({ type: 'control', control: 'mute-assistant' });
-      }
     });
 
     vapi.on('call-end', () => {
@@ -134,24 +134,31 @@ export function useVapiConversation(
     });
   }
 
-  // Asks our backend whether this call is allowed (rate-limit gate) and, if
-  // so, mints a short-lived Vapi token scoped to this assistant/origin. A
-  // fresh Vapi client is created per call since the auth token only lives
-  // for the lifetime of one call.
-  async function prepareCall(): Promise<boolean> {
+  // Asks our backend whether this conversation is allowed (rate-limit gate)
+  // and, if so, mints a short-lived Vapi token scoped to this assistant/origin.
+  // Returns null when blocked.
+  async function getAuthKey(): Promise<string | null> {
     let authKey: string = VAPI_PUBLIC_KEY;
 
     try {
       const res = await fetch('/api/start-call', { method: 'POST' });
       if (res.ok) {
         const data = await res.json();
-        if (data.allowed === false) return false;
+        if (data.allowed === false) return null;
         if (data.token) authKey = data.token;
       }
       // non-OK response: fail open with the static public key
     } catch {
       // backend unreachable: fail open with the static public key
     }
+    return authKey;
+  }
+
+  // A fresh Vapi client is created per call since the auth token only lives
+  // for the lifetime of one call.
+  async function prepareCall(): Promise<boolean> {
+    const authKey = await getAuthKey();
+    if (!authKey) return false;
 
     const vapi = new Vapi(authKey);
     attachListeners(vapi);
@@ -160,7 +167,6 @@ export function useVapiConversation(
   }
 
   const startVoice = async () => {
-    modeRef.current = 'voice';
     setMode('voice');
     setCallStatus('connecting');
     setMessages([]);
@@ -178,25 +184,68 @@ export function useVapiConversation(
   };
 
   const startChat = async () => {
-    modeRef.current = 'chat';
     setMode('chat');
     setCallStatus('connecting');
     setMessages([]);
     setBlockedMessage(null);
+    chatSessionRef.current = null;
 
-    const allowed = await prepareCall();
-    if (!allowed) {
+    const authKey = await getAuthKey();
+    if (!authKey) {
       setCallStatus('idle');
       setMode('selecting');
       setBlockedMessage(RATE_LIMIT_MESSAGE);
       return;
     }
 
-    vapiRef.current!.start(ASSISTANT_ID);
+    chatTokenRef.current = authKey;
+    setCallStatus('active');
+  };
+
+  const addAssistantMessage = (text: string) => {
+    setMessages((prev) => [
+      ...prev,
+      { id: `${Date.now()}-${Math.random()}`, role: 'assistant', text, isPartial: false },
+    ]);
+  };
+
+  const sendChatMessage = async (content: string) => {
+    setIsThinking(true);
+    try {
+      const res = await fetch(VAPI_CHAT_URL, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${chatTokenRef.current}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          assistantId: ASSISTANT_ID,
+          input: content,
+          ...(chatSessionRef.current ? { sessionId: chatSessionRef.current } : {}),
+        }),
+      });
+      if (!res.ok) throw new Error(`Vapi chat ${res.status}`);
+      const data: { sessionId?: string; output?: { role: string; content?: unknown }[] } =
+        await res.json();
+      if (data.sessionId) chatSessionRef.current = data.sessionId;
+
+      const replies = (data.output ?? []).filter(
+        (m): m is { role: string; content: string } =>
+          m.role === 'assistant' && typeof m.content === 'string' && m.content.trim() !== ''
+      );
+      if (replies.length === 0) throw new Error('Vapi chat sin respuesta');
+      replies.forEach((m) => addAssistantMessage(m.content));
+    } catch (err) {
+      console.error('[ellie chat]', err);
+      addAssistantMessage(CHAT_ERROR_MESSAGE);
+    } finally {
+      setIsThinking(false);
+    }
   };
 
   const sendMessage = (content: string) => {
-    if (!content.trim() || !vapiRef.current) return;
+    if (!content.trim()) return;
+    if (mode === 'chat' ? !chatTokenRef.current : !vapiRef.current) return;
 
     const userMessage: ConversationMessage = {
       id: Date.now().toString(),
@@ -206,7 +255,13 @@ export function useVapiConversation(
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    vapiRef.current.send({
+
+    if (mode === 'chat') {
+      void sendChatMessage(content);
+      return;
+    }
+
+    vapiRef.current!.send({
       type: 'add-message',
       message: {
         role: 'user',
@@ -216,7 +271,23 @@ export function useVapiConversation(
     });
   };
 
+  // La sesión de chat en Vapi expira sola; cerrarla explícitamente (sessionEnd)
+  // tarda más de un minuto y no aporta nada.
+  const endChat = () => {
+    chatTokenRef.current = null;
+    chatSessionRef.current = null;
+    setIsThinking(false);
+    setCallStatus('idle');
+    setMode('selecting');
+    setMessages([]);
+    onCallEndRef.current?.();
+  };
+
   const endCall = () => {
+    if (mode === 'chat') {
+      endChat();
+      return;
+    }
     vapiRef.current?.stop();
   };
 
@@ -226,6 +297,7 @@ export function useVapiConversation(
     messages,
     partialTranscript,
     isSpeaking,
+    isThinking,
     blockedMessage,
     startVoice,
     startChat,
