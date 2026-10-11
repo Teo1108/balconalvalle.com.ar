@@ -31,11 +31,15 @@ export interface UseVapiConversationResult {
   messages: ConversationMessage[];
   partialTranscript: string;
   isSpeaking: boolean;
+  blockedMessage: string | null;
   startVoice: () => void;
   startChat: () => void;
   sendMessage: (content: string) => void;
   endCall: () => void;
 }
+
+const RATE_LIMIT_MESSAGE =
+  'Estamos recibiendo muchas solicitudes desde tu conexión. Probá de nuevo en un rato.';
 
 export function useVapiConversation(
   options: UseVapiConversationOptions = {}
@@ -47,15 +51,19 @@ export function useVapiConversation(
   const [messages, setMessages] = useState<ConversationMessage[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [partialTranscript, setPartialTranscript] = useState('');
+  const [blockedMessage, setBlockedMessage] = useState<string | null>(null);
 
   const vapiRef = useRef<Vapi | null>(null);
   const onCallEndRef = useRef(onCallEnd);
   onCallEndRef.current = onCallEnd;
 
   useEffect(() => {
-    vapiRef.current = new Vapi(VAPI_PUBLIC_KEY);
-    const vapi = vapiRef.current;
+    return () => {
+      vapiRef.current?.stop();
+    };
+  }, []);
 
+  function attachListeners(vapi: Vapi) {
     vapi.on('call-start', () => {
       setCallStatus('active');
     });
@@ -115,27 +123,65 @@ export function useVapiConversation(
         setIsSpeaking(false);
       }
     });
+  }
 
-    return () => {
-      vapi.stop();
-    };
-  }, []);
+  // Asks our backend whether this call is allowed (rate-limit gate) and, if
+  // so, mints a short-lived Vapi token scoped to this assistant/origin. A
+  // fresh Vapi client is created per call since the auth token only lives
+  // for the lifetime of one call.
+  async function prepareCall(): Promise<boolean> {
+    let authKey: string = VAPI_PUBLIC_KEY;
 
-  const startVoice = () => {
-    if (!vapiRef.current) return;
+    try {
+      const res = await fetch('/api/start-call', { method: 'POST' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.allowed === false) return false;
+        if (data.token) authKey = data.token;
+      }
+      // non-OK response: fail open with the static public key
+    } catch {
+      // backend unreachable: fail open with the static public key
+    }
+
+    const vapi = new Vapi(authKey);
+    attachListeners(vapi);
+    vapiRef.current = vapi;
+    return true;
+  }
+
+  const startVoice = async () => {
     setMode('voice');
     setCallStatus('connecting');
     setMessages([]);
-    vapiRef.current.start(ASSISTANT_ID);
+    setBlockedMessage(null);
+
+    const allowed = await prepareCall();
+    if (!allowed) {
+      setCallStatus('idle');
+      setMode('selecting');
+      setBlockedMessage(RATE_LIMIT_MESSAGE);
+      return;
+    }
+
+    vapiRef.current!.start(ASSISTANT_ID);
   };
 
-  const startChat = () => {
-    if (!vapiRef.current) return;
+  const startChat = async () => {
     setMode('chat');
     setCallStatus('connecting');
     setMessages([]);
+    setBlockedMessage(null);
 
-    vapiRef.current.start(ASSISTANT_ID);
+    const allowed = await prepareCall();
+    if (!allowed) {
+      setCallStatus('idle');
+      setMode('selecting');
+      setBlockedMessage(RATE_LIMIT_MESSAGE);
+      return;
+    }
+
+    vapiRef.current!.start(ASSISTANT_ID);
 
     setTimeout(() => {
       vapiRef.current?.setMuted(true);
@@ -177,6 +223,7 @@ export function useVapiConversation(
     messages,
     partialTranscript,
     isSpeaking,
+    blockedMessage,
     startVoice,
     startChat,
     sendMessage,

@@ -15,6 +15,7 @@ export default function VapiWidget() {
     messages,
     partialTranscript,
     isSpeaking,
+    blockedMessage,
     startVoice,
     startChat,
     sendMessage,
@@ -92,6 +93,9 @@ export default function VapiWidget() {
           >
             Cerrar
           </button>
+          {blockedMessage && (
+            <p className="text-xs text-red-600 text-center">{blockedMessage}</p>
+          )}
         </div>
       )}
 

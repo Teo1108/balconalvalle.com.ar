@@ -14,6 +14,7 @@ export default function EllieHeroPanel() {
     messages,
     partialTranscript,
     isSpeaking,
+    blockedMessage,
     startVoice,
     startChat,
     sendMessage,
@@ -67,6 +68,9 @@ export default function EllieHeroPanel() {
               Chatear por texto
             </button>
           </div>
+          {blockedMessage && (
+            <p className="text-xs text-red-600 text-center">{blockedMessage}</p>
+          )}
         </div>
       )}
 
