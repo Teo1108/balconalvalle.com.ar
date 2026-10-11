@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Mic, MessageSquare, PhoneOff, Send, Bot } from 'lucide-react';
 import { useVapiConversation } from '@/hooks/use-vapi-conversation';
+import MessageText from '@/components/ui/message-text';
 
 export default function EllieHeroPanel() {
   const [chatInput, setChatInput] = useState('');
@@ -85,7 +86,7 @@ export default function EllieHeroPanel() {
               </div>
             )}
 
-            {messages.map((msg) => (
+            {messages.map((msg, idx) => (
               <div
                 key={msg.id}
                 className={`flex ${
@@ -99,7 +100,11 @@ export default function EllieHeroPanel() {
                       : 'bg-white text-ellie-on-surface rounded-bl-none shadow-sm'
                   }`}
                 >
-                  <p className="text-sm leading-relaxed">{msg.text}</p>
+                  <MessageText
+                    text={msg.text}
+                    role={msg.role}
+                    context={messages.slice(0, idx).map((m) => m.text).join(' ')}
+                  />
                 </div>
               </div>
             ))}

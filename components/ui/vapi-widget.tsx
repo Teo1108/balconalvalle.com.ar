@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Mic, MessageCircle, Phone, PhoneOff, Send, X, Loader2 } from 'lucide-react';
 import { useVapiConversation } from '@/hooks/use-vapi-conversation';
+import MessageText from '@/components/ui/message-text';
 
 export default function VapiWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -129,7 +130,7 @@ export default function VapiWidget() {
               </div>
             )}
 
-            {messages.map((msg) => (
+            {messages.map((msg, idx) => (
               <div
                 key={msg.id}
                 className={`flex ${
@@ -143,7 +144,11 @@ export default function VapiWidget() {
                       : 'bg-white text-valle-dark rounded-bl-none shadow-sm'
                   }`}
                 >
-                  <p className="text-sm leading-relaxed">{msg.text}</p>
+                  <MessageText
+                    text={msg.text}
+                    role={msg.role}
+                    context={messages.slice(0, idx).map((m) => m.text).join(' ')}
+                  />
                 </div>
               </div>
             ))}

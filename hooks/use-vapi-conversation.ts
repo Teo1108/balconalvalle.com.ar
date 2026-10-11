@@ -54,6 +54,8 @@ export function useVapiConversation(
   const [blockedMessage, setBlockedMessage] = useState<string | null>(null);
 
   const vapiRef = useRef<Vapi | null>(null);
+  const modeRef = useRef<ConversationMode>('selecting');
+  modeRef.current = mode;
   const onCallEndRef = useRef(onCallEnd);
   onCallEndRef.current = onCallEnd;
 
@@ -66,6 +68,13 @@ export function useVapiConversation(
   function attachListeners(vapi: Vapi) {
     vapi.on('call-start', () => {
       setCallStatus('active');
+      // El chat es una llamada con micrófono y voz de Ellie silenciados. Se
+      // silencia recién acá: antes de 'call-start' el SDK ignora setMuted/send
+      // sin avisar y la conversación queda como llamada de voz.
+      if (modeRef.current === 'chat') {
+        vapi.setMuted(true);
+        vapi.send({ type: 'control', control: 'mute-assistant' });
+      }
     });
 
     vapi.on('call-end', () => {
@@ -151,6 +160,7 @@ export function useVapiConversation(
   }
 
   const startVoice = async () => {
+    modeRef.current = 'voice';
     setMode('voice');
     setCallStatus('connecting');
     setMessages([]);
@@ -168,6 +178,7 @@ export function useVapiConversation(
   };
 
   const startChat = async () => {
+    modeRef.current = 'chat';
     setMode('chat');
     setCallStatus('connecting');
     setMessages([]);
@@ -182,14 +193,6 @@ export function useVapiConversation(
     }
 
     vapiRef.current!.start(ASSISTANT_ID);
-
-    setTimeout(() => {
-      vapiRef.current?.setMuted(true);
-      vapiRef.current?.send({
-        type: 'control',
-        control: 'mute-assistant',
-      });
-    }, 500);
   };
 
   const sendMessage = (content: string) => {
