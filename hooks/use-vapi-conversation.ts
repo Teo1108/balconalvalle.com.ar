@@ -180,7 +180,7 @@ export function useVapiConversation(
       return;
     }
 
-    vapiRef.current!.start(ASSISTANT_ID);
+    vapiRef.current!.start(ASSISTANT_ID, { variableValues: { canal: 'voz' } });
   };
 
   const startChat = async () => {
@@ -221,6 +221,8 @@ export function useVapiConversation(
         body: JSON.stringify({
           assistantId: ASSISTANT_ID,
           input: content,
+          // Le avisa a Ellie que es chat escrito: no pide deletrear.
+          assistantOverrides: { variableValues: { canal: 'chat' } },
           ...(chatSessionRef.current ? { sessionId: chatSessionRef.current } : {}),
         }),
       });
