@@ -44,6 +44,10 @@ export default function ContactSection() {
 
         <p className="text-valle-sand/60 text-sm">
           © 2026 Balcon al Valle Grande. Todos los derechos reservados.
+          {' · '}
+          <a href="/privacidad" className="underline hover:text-valle-sand">
+            Política de privacidad
+          </a>
         </p>
       </div>
     </section>
