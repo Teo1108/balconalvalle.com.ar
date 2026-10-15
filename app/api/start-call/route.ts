@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { VAPI_PUBLIC_KEY } from '@/lib/vapi-config';
-import { getClientIp, mintVapiToken, rateLimit } from '@/lib/vapi-server';
+import { getClientIp, mintVapiToken } from '@/lib/vapi-server';
+import { rateLimit } from '@/lib/rate-limit';
 
 const N8N_CALL_GATE_URL = process.env.N8N_CALL_GATE_URL;
-const MAX_CALLS = 5; // llamadas de voz por IP
-const WINDOW_MS = 10 * 60 * 1000; // en 10 minutos
+const LIMITS = [
+  { max: 5, windowMs: 10 * 60 * 1000 }, // 5 llamadas de voz cada 10 minutos por IP
+  { max: 15, windowMs: 24 * 60 * 60 * 1000 }, // y 15 por día
+];
 
 async function isAllowedByGate(ip: string): Promise<boolean> {
   if (!N8N_CALL_GATE_URL) return true; // gate not configured — fail open
@@ -29,7 +32,7 @@ async function isAllowedByGate(ip: string): Promise<boolean> {
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
-  if (!rateLimit(`call:${ip}`, MAX_CALLS, WINDOW_MS).ok) {
+  if (!(await rateLimit(`call:${ip}`, LIMITS)).ok) {
     return NextResponse.json({ allowed: false });
   }
   const allowed = await isAllowedByGate(ip);

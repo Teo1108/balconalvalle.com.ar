@@ -34,29 +34,3 @@ export async function mintVapiToken(): Promise<string | null> {
     .setExpirationTime('1h')
     .sign(key);
 }
-
-// Límite simple por IP en memoria (ventana deslizante).
-// En Vercel cada instancia lleva su propia cuenta: frena el abuso común
-// (alguien mandando mensajes en ráfaga) sin depender de un servicio externo.
-const hits = new Map<string, number[]>();
-
-export function rateLimit(key: string, max: number, windowMs: number, minGapMs = 0): { ok: boolean; retryAfterS: number } {
-  const now = Date.now();
-  const list = (hits.get(key) ?? []).filter((t) => now - t < windowMs);
-  const last = list[list.length - 1];
-  if (list.length >= max) {
-    return { ok: false, retryAfterS: Math.ceil((windowMs - (now - list[0])) / 1000) };
-  }
-  if (minGapMs && last !== undefined && now - last < minGapMs) {
-    return { ok: false, retryAfterS: Math.ceil((minGapMs - (now - last)) / 1000) };
-  }
-  list.push(now);
-  hits.set(key, list);
-  if (hits.size > 5000) {
-    // limpieza ocasional para que el mapa no crezca sin límite
-    hits.forEach((v, k) => {
-      if (!v.some((t) => now - t < windowMs)) hits.delete(k);
-    });
-  }
-  return { ok: true, retryAfterS: 0 };
-}
