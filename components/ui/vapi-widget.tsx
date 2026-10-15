@@ -102,7 +102,7 @@ export default function VapiWidget() {
       )}
 
       {isOpen && (mode === 'voice' || mode === 'chat') && (
-        <div className="bg-white rounded-2xl shadow-2xl flex flex-col w-80 h-96 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-2xl flex flex-col w-80 h-96 md:w-[420px] md:h-[600px] overflow-hidden">
           <div className="bg-valle-brown text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-lg">🤖</span>
@@ -181,8 +181,9 @@ export default function VapiWidget() {
                   placeholder="Escribí tu mensaje..."
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
+                  disabled={isThinking}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === 'Enter' && !isThinking) {
                       handleSendChat();
                     }
                   }}
@@ -190,7 +191,7 @@ export default function VapiWidget() {
                 />
                 <button
                   onClick={handleSendChat}
-                  disabled={!chatInput.trim()}
+                  disabled={!chatInput.trim() || isThinking}
                   className="bg-green-600 hover:bg-green-700 disabled:bg-green-300 text-white p-2 rounded-lg transition-colors"
                   aria-label="Enviar"
                 >

@@ -39,7 +39,6 @@ export interface UseVapiConversationResult {
   endCall: () => void;
 }
 
-const VAPI_CHAT_URL = 'https://api.vapi.ai/chat/web';
 const CHAT_ERROR_MESSAGE =
   'Perdón, tuve un problema para responder. Probá de nuevo o escribinos por WhatsApp.';
 
@@ -61,7 +60,6 @@ export function useVapiConversation(
 
   const vapiRef = useRef<Vapi | null>(null);
   // Chat de texto: usa la API de chat de Vapi (sin llamada, sin micrófono ni voz).
-  const chatTokenRef = useRef<string | null>(null);
   const chatSessionRef = useRef<string | null>(null);
   const onCallEndRef = useRef(onCallEnd);
   onCallEndRef.current = onCallEnd;
@@ -189,16 +187,7 @@ export function useVapiConversation(
     setMessages([]);
     setBlockedMessage(null);
     chatSessionRef.current = null;
-
-    const authKey = await getAuthKey();
-    if (!authKey) {
-      setCallStatus('idle');
-      setMode('selecting');
-      setBlockedMessage(RATE_LIMIT_MESSAGE);
-      return;
-    }
-
-    chatTokenRef.current = authKey;
+    // El chat pasa por /api/chat, que limita los mensajes por IP.
     setCallStatus('active');
   };
 
@@ -212,31 +201,21 @@ export function useVapiConversation(
   const sendChatMessage = async (content: string) => {
     setIsThinking(true);
     try {
-      const res = await fetch(VAPI_CHAT_URL, {
+      const res = await fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${chatTokenRef.current}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          assistantId: ASSISTANT_ID,
-          input: content,
-          // Le avisa a Ellie que es chat escrito: no pide deletrear.
-          assistantOverrides: { variableValues: { canal: 'chat' } },
-          ...(chatSessionRef.current ? { sessionId: chatSessionRef.current } : {}),
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input: content, sessionId: chatSessionRef.current }),
       });
-      if (!res.ok) throw new Error(`Vapi chat ${res.status}`);
-      const data: { sessionId?: string; output?: { role: string; content?: unknown }[] } =
-        await res.json();
+      if (res.status === 429) {
+        addAssistantMessage(RATE_LIMIT_MESSAGE);
+        return;
+      }
+      if (!res.ok) throw new Error(`chat ${res.status}`);
+      const data: { sessionId?: string | null; replies?: string[] } = await res.json();
       if (data.sessionId) chatSessionRef.current = data.sessionId;
-
-      const replies = (data.output ?? []).filter(
-        (m): m is { role: string; content: string } =>
-          m.role === 'assistant' && typeof m.content === 'string' && m.content.trim() !== ''
-      );
-      if (replies.length === 0) throw new Error('Vapi chat sin respuesta');
-      replies.forEach((m) => addAssistantMessage(m.content));
+      const replies = data.replies ?? [];
+      if (replies.length === 0) throw new Error('chat sin respuesta');
+      replies.forEach((m) => addAssistantMessage(m));
     } catch (err) {
       console.error('[ellie chat]', err);
       addAssistantMessage(CHAT_ERROR_MESSAGE);
@@ -247,7 +226,7 @@ export function useVapiConversation(
 
   const sendMessage = (content: string) => {
     if (!content.trim()) return;
-    if (mode === 'chat' ? !chatTokenRef.current : !vapiRef.current) return;
+    if (mode === 'chat' ? isThinking : !vapiRef.current) return;
 
     const userMessage: ConversationMessage = {
       id: Date.now().toString(),
@@ -276,7 +255,6 @@ export function useVapiConversation(
   // La sesión de chat en Vapi expira sola; cerrarla explícitamente (sessionEnd)
   // tarda más de un minuto y no aporta nada.
   const endChat = () => {
-    chatTokenRef.current = null;
     chatSessionRef.current = null;
     setIsThinking(false);
     setCallStatus('idle');

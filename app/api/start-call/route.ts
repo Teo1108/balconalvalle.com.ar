@@ -1,17 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { SignJWT } from 'jose';
-import { VAPI_PUBLIC_KEY, VAPI_ASSISTANT_ID } from '@/lib/vapi-config';
+import { VAPI_PUBLIC_KEY } from '@/lib/vapi-config';
+import { getClientIp, mintVapiToken, rateLimit } from '@/lib/vapi-server';
 
 const N8N_CALL_GATE_URL = process.env.N8N_CALL_GATE_URL;
-const VAPI_PRIVATE_KEY = process.env.VAPI_PRIVATE_KEY;
-const VAPI_ORG_ID = process.env.VAPI_ORG_ID;
-const SITE_ORIGIN = process.env.SITE_ORIGIN ?? 'https://balconalvalle.com.ar';
-
-function getClientIp(req: NextRequest): string {
-  const forwarded = req.headers.get('x-forwarded-for');
-  if (forwarded) return forwarded.split(',')[0].trim();
-  return req.headers.get('x-real-ip') ?? 'unknown';
-}
+const MAX_CALLS = 5; // llamadas de voz por IP
+const WINDOW_MS = 10 * 60 * 1000; // en 10 minutos
 
 async function isAllowedByGate(ip: string): Promise<boolean> {
   if (!N8N_CALL_GATE_URL) return true; // gate not configured — fail open
@@ -34,29 +27,11 @@ async function isAllowedByGate(ip: string): Promise<boolean> {
   }
 }
 
-async function mintVapiToken(): Promise<string | null> {
-  if (!VAPI_PRIVATE_KEY || !VAPI_ORG_ID) return null;
-
-  const key = new TextEncoder().encode(VAPI_PRIVATE_KEY);
-  return new SignJWT({
-    orgId: VAPI_ORG_ID,
-    token: {
-      tag: 'public',
-      restrictions: {
-        enabled: true,
-        allowedOrigins: [SITE_ORIGIN],
-        allowedAssistantIds: [VAPI_ASSISTANT_ID],
-        allowTransientAssistant: false,
-      },
-    },
-  })
-    .setProtectedHeader({ alg: 'HS256' })
-    .setExpirationTime('1h')
-    .sign(key);
-}
-
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
+  if (!rateLimit(`call:${ip}`, MAX_CALLS, WINDOW_MS).ok) {
+    return NextResponse.json({ allowed: false });
+  }
   const allowed = await isAllowedByGate(ip);
 
   if (!allowed) {

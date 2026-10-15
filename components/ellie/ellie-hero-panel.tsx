@@ -137,8 +137,9 @@ export default function EllieHeroPanel() {
                   placeholder="Escribí tu mensaje..."
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
+                  disabled={isThinking}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === 'Enter' && !isThinking) {
                       handleSendChat();
                     }
                   }}
@@ -146,7 +147,7 @@ export default function EllieHeroPanel() {
                 />
                 <button
                   onClick={handleSendChat}
-                  disabled={!chatInput.trim()}
+                  disabled={!chatInput.trim() || isThinking}
                   className="bg-ellie-secondary hover:opacity-90 disabled:opacity-40 text-white p-2 rounded-lg transition-colors"
                   aria-label="Enviar"
                 >
