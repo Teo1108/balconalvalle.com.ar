@@ -6,7 +6,7 @@ import { rateLimit } from '@/lib/rate-limit';
 const N8N_CALL_GATE_URL = process.env.N8N_CALL_GATE_URL;
 const LIMITS = [
   { max: 5, windowMs: 10 * 60 * 1000 }, // 5 llamadas de voz cada 10 minutos por IP
-  { max: 15, windowMs: 24 * 60 * 60 * 1000 }, // y 15 por día
+  { max: 6, windowMs: 24 * 60 * 60 * 1000 }, // y 6 por día (cada una dura como máximo 8 min, fijado en Vapi)
 ];
 
 async function isAllowedByGate(ip: string): Promise<boolean> {
