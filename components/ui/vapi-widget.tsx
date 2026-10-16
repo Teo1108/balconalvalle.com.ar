@@ -174,11 +174,13 @@ export default function VapiWidget() {
           </div>
 
           <div className="border-t border-valle-sand/30 p-3 bg-white">
-            {mode === 'chat' && (
+            {/* En llamada también se puede escribir: sirve para el mail u otros datos
+                que Ellie entiende mal por voz. */}
+            {(mode === 'chat' || callStatus === 'active') && (
               <div className="flex gap-2 mb-3">
                 <input
                   type="text"
-                  placeholder="Escribí tu mensaje..."
+                  placeholder={mode === 'voice' ? 'Escribí tu mail u otro dato…' : 'Escribí tu mensaje...'}
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                   disabled={isThinking}
