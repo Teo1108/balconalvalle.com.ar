@@ -19,6 +19,25 @@ interface VapiMessage {
   role?: 'user' | 'assistant';
   transcript?: string;
   transcriptType?: 'partial' | 'final';
+  messagesOpenAIFormatted?: { role: string; content?: unknown }[];
+}
+
+// En la llamada, Ellie no lee el link de pago: cuando BookSlot (o UpdateSlots)
+// devuelve código y link, los mostramos en la pantalla.
+function bookingFromToolResults(msgs: { role: string; content?: unknown }[]): { code?: string; link: string }[] {
+  const out: { code?: string; link: string }[] = [];
+  for (const m of msgs) {
+    if (m.role !== 'tool' || typeof m.content !== 'string' || !m.content.includes('paymentLink')) continue;
+    try {
+      const r = JSON.parse(m.content);
+      if (typeof r.paymentLink === 'string' && r.paymentLink.startsWith('http')) {
+        out.push({ code: typeof r.codigoReserva === 'string' ? r.codigoReserva : undefined, link: r.paymentLink });
+      }
+    } catch {
+      // resultado que no es JSON: se ignora
+    }
+  }
+  return out;
 }
 
 export interface UseVapiConversationOptions {
@@ -61,6 +80,7 @@ export function useVapiConversation(
   const vapiRef = useRef<Vapi | null>(null);
   // Chat de texto: usa la API de chat de Vapi (sin llamada, sin micrófono ni voz).
   const chatSessionRef = useRef<string | null>(null);
+  const shownLinksRef = useRef<Set<string>>(new Set());
   const onCallEndRef = useRef(onCallEnd);
   onCallEndRef.current = onCallEnd;
 
@@ -122,6 +142,18 @@ export function useVapiConversation(
         }
       }
 
+      if (msg.type === 'conversation-update' && msg.messagesOpenAIFormatted) {
+        for (const b of bookingFromToolResults(msg.messagesOpenAIFormatted)) {
+          if (shownLinksRef.current.has(b.link)) continue;
+          shownLinksRef.current.add(b.link);
+          const text = `${b.code ? `Tu código de pre-reserva: ${b.code}\n` : ''}Pagá la seña acá: ${b.link}`;
+          setMessages((prev) => [
+            ...prev,
+            { id: `${Date.now()}-pago`, role: 'assistant', text, isPartial: false },
+          ]);
+        }
+      }
+
       if (msg.type === 'speech-start') {
         setIsSpeaking(true);
       }
@@ -169,6 +201,7 @@ export function useVapiConversation(
     setCallStatus('connecting');
     setMessages([]);
     setBlockedMessage(null);
+    shownLinksRef.current = new Set();
 
     const allowed = await prepareCall();
     if (!allowed) {

@@ -55,12 +55,24 @@ export default function MessageText({
 
   return (
     <>
-      <p className="text-sm leading-relaxed">
+      <p className="text-sm leading-relaxed whitespace-pre-line">
         {parts.map((part, i) =>
           i % 2 === 1 ? (
-            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className={linkClass}>
-              {part}
-            </a>
+            /mercadopago\./i.test(part) ? (
+              <a
+                key={i}
+                href={part}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="my-1 inline-flex items-center rounded-full bg-sky-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-sky-600"
+              >
+                Pagar la seña en Mercado Pago
+              </a>
+            ) : (
+              <a key={i} href={part} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                {part}
+              </a>
+            )
           ) : (
             part
           ),
