@@ -176,16 +176,16 @@ export default function VapiWidget() {
           <div className="border-t border-valle-sand/30 p-3 bg-white">
             {/* En llamada también se puede escribir: sirve para el mail u otros datos
                 que Ellie entiende mal por voz. */}
-            {(mode === 'chat' || callStatus === 'active') && (
+            {(mode === 'chat' || mode === 'voice') && (
               <div className="flex gap-2 mb-3">
                 <input
                   type="text"
-                  placeholder={mode === 'voice' ? 'Escribí tu mail u otro dato…' : 'Escribí tu mensaje...'}
+                  placeholder={mode === 'voice' ? 'Escribí acá tu nombre, celular, mail…' : 'Escribí tu mensaje...'}
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
-                  disabled={isThinking}
+                  disabled={isThinking || callStatus !== 'active'}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !isThinking) {
+                    if (e.key === 'Enter' && !isThinking && callStatus === 'active') {
                       handleSendChat();
                     }
                   }}
@@ -193,7 +193,7 @@ export default function VapiWidget() {
                 />
                 <button
                   onClick={handleSendChat}
-                  disabled={!chatInput.trim() || isThinking}
+                  disabled={!chatInput.trim() || isThinking || callStatus !== 'active'}
                   className="bg-green-600 hover:bg-green-700 disabled:bg-green-300 text-white p-2 rounded-lg transition-colors"
                   aria-label="Enviar"
                 >
