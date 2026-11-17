@@ -47,7 +47,7 @@ const CABINS: Cabin[] = [
     name: 'Cabaña 3',
     underConstruction: true,
     image:
-      'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/v1794873658/cabania3-exterior.jpg',
+      'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/v1794878489/cabania3-exterior-mejorada.jpg',
     alt: 'Próxima cabaña en Valle Grande, San Rafael - vista exterior',
     capacity: 4,
     beds: 2,
