@@ -1,6 +1,6 @@
 import type { ElementType } from 'react';
 import Image from 'next/image';
-import { Users, Bed, Wifi, Flame, MessageCircle, Check } from 'lucide-react';
+import { Users, Bed, Wifi, Flame, MessageCircle, Check, Construction } from 'lucide-react';
 import { whatsappUrl } from '@/lib/config';
 
 type Cabin = {
@@ -11,7 +11,9 @@ type Cabin = {
   alt: string;
   capacity: number;
   beds: number;
+  sofaBeds?: number;
   amenities: string[];
+  underConstruction?: boolean;
 };
 
 const CABINS: Cabin[] = [
@@ -24,7 +26,7 @@ const CABINS: Cabin[] = [
     poster:
       'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/v1790522232/cab1-principal.jpg',
     alt: 'Cabaña 1 en Valle Grande, San Rafael - vista exterior',
-    capacity: 4,
+    capacity: 3,
     beds: 3,
     amenities: ['Wi-Fi', 'Aire frio/calor', 'Cocina equipada', 'Cochera', 'Terraza'],
   },
@@ -37,17 +39,19 @@ const CABINS: Cabin[] = [
     poster:
       'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/v1790522482/Gemini_Generated_Image_tm0wp9tm0wp9tm0w_yw5pec.jpg',
     alt: 'Cabaña 2 en Valle Grande, San Rafael - vista exterior',
-    capacity: 6,
+    capacity: 4,
     beds: 4,
     amenities: ['Wi-Fi', 'Aire frio/calor', 'Cocina equipada', 'Cochera', 'Terraza'],
   },
   {
-    name: 'En construccion',
+    name: 'Cabaña 3',
+    underConstruction: true,
     image:
-      'https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?q=80&w=800&auto=format&fit=crop',
-    alt: 'Próxima cabaña en construcción - imagen ilustrativa',
-    capacity: 2,
-    beds: 1,
+      'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/v1794873658/cabania3-exterior.jpg',
+    alt: 'Próxima cabaña en Valle Grande, San Rafael - vista exterior',
+    capacity: 4,
+    beds: 2,
+    sofaBeds: 1,
     amenities: ['Wi-Fi', 'Estufa', 'Cocina completa', 'Vista al valle'],
   },
 ];
@@ -94,6 +98,12 @@ export default function CabinsSection() {
                     className="object-cover"
                   />
                 )}
+                {cabin.underConstruction && (
+                  <span className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full bg-amber-400 px-3 py-1 text-sm font-semibold text-valle-dark shadow-md">
+                    <Construction size={16} />
+                    En construcción
+                  </span>
+                )}
               </div>
               <div className="p-6 flex flex-col flex-1 bg-valle-cream">
                 <h3 className="text-2xl font-bold text-valle-dark mb-3">
@@ -107,6 +117,9 @@ export default function CabinsSection() {
                   <span className="flex items-center gap-1 text-valle-dark/70">
                     <Bed size={15} />
                     {cabin.beds} {cabin.beds === 1 ? 'cama' : 'camas'}
+                    {cabin.sofaBeds
+                      ? ` + ${cabin.sofaBeds} ${cabin.sofaBeds === 1 ? 'sofá cama' : 'sofás cama'}`
+                      : ''}
                   </span>
                 </div>
                 <ul className="space-y-1.5 mb-6 flex-1">

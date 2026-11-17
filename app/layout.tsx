@@ -31,7 +31,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'Cabañas en Valle Grande, San Rafael | Balcón al Valle',
   description:
-    'Cabañas en Valle Grande, dentro del Cañón del Atuel, San Rafael, Mendoza. Alojamiento rural para 2 a 6 personas con acceso privado al Río Atuel, rodeado de montaña y bosque nativo.',
+    'Cabañas en Valle Grande, dentro del Cañón del Atuel, San Rafael, Mendoza. Alojamiento rural para 3 a 4 personas con acceso privado al Río Atuel, rodeado de montaña y bosque nativo.',
   alternates: {
     canonical: 'https://balconalvalle.com.ar',
   },
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Cabañas en Valle Grande, San Rafael | Balcón al Valle',
     description:
-      'Cabañas en Valle Grande, dentro del Cañón del Atuel, San Rafael, Mendoza. Alojamiento rural para 2 a 6 personas con acceso privado al Río Atuel, rodeado de montaña y bosque nativo.',
+      'Cabañas en Valle Grande, dentro del Cañón del Atuel, San Rafael, Mendoza. Alojamiento rural para 3 a 4 personas con acceso privado al Río Atuel, rodeado de montaña y bosque nativo.',
     url: 'https://balconalvalle.com.ar',
     type: 'website',
     images: [

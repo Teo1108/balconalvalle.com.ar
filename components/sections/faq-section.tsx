@@ -7,7 +7,7 @@ const FAQS = [
   {
     question: '¿Cuántas personas pueden alojarse?',
     answer:
-      'Tenemos cabañas para distintos grupos: la Cabaña 1 aloja hasta 4 personas y la Cabaña 2 hasta 6 personas.',
+      'Tenemos cabañas para distintos grupos: la Cabaña 1 aloja hasta 3 personas y la Cabaña 2 hasta 4 personas. La Cabaña 3, que está en construcción, también será para 4 personas.',
   },
   {
     question: '¿Qué actividades hay cerca?',
