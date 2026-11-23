@@ -62,8 +62,7 @@ export const LODGING_SCHEMA = {
     latitude: -34.765827966075776,
     longitude: -68.42590132532354,
   },
-  hasMap:
-    'https://www.google.com/maps/search/?api=1&query=-34.765827966075776,-68.42590132532354',
+  hasMap: SITE_CONFIG.social.googleMaps,
   petsAllowed: true,
   sameAs: Object.values(SITE_CONFIG.social),
   containsPlace: CABINS.filter((cabin) => !cabin.underConstruction).map(
