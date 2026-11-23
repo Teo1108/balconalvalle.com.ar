@@ -17,7 +17,7 @@ const FAQS = [
   {
     question: '¿Qué comodidades tienen las cabañas?',
     answer:
-      'Todas cuentan con Wi-Fi, aire frío/calor, cocina equipada, cochera y terraza con vista al valle.',
+      'Las cabañas cuentan con Wi-Fi, aire frío/calor, cocina equipada, parrilla individual, ropa de cama y toallas incluidas, cochera y terraza con vista a la montaña y al valle.',
   },
   {
     question: '¿Aceptan mascotas?',
@@ -26,7 +26,7 @@ const FAQS = [
   {
     question: '¿Cuál es el horario de check-in y check-out?',
     answer:
-      'El horario es flexible y lo coordinamos por WhatsApp al momento de confirmar tu reserva.',
+      'El check-in es a partir de las 13:00 y el check-out hasta las 10:00. Si lo avisás con anticipación, podemos ser flexibles: lo coordinamos por WhatsApp al confirmar tu reserva.',
   },
   {
     question: '¿Cómo reservo o consulto disponibilidad?',

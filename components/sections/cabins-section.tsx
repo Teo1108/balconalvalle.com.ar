@@ -28,7 +28,7 @@ export const CABINS: Cabin[] = [
     alt: 'Cabaña 1 en Valle Grande, San Rafael - vista exterior',
     capacity: 3,
     beds: 3,
-    amenities: ['Wi-Fi', 'Aire frio/calor', 'Cocina equipada', 'Cochera', 'Terraza'],
+    amenities: ['Wi-Fi', 'Aire frio/calor', 'Cocina equipada', 'Parrilla', 'Ropa de cama y toallas', 'Cochera', 'Terraza', 'Vista a la montaña'],
   },
   {
     name: 'Cabaña 2',
@@ -41,7 +41,7 @@ export const CABINS: Cabin[] = [
     alt: 'Cabaña 2 en Valle Grande, San Rafael - vista exterior',
     capacity: 4,
     beds: 4,
-    amenities: ['Wi-Fi', 'Aire frio/calor', 'Cocina equipada', 'Cochera', 'Terraza'],
+    amenities: ['Wi-Fi', 'Aire frio/calor', 'Cocina equipada', 'Parrilla', 'Ropa de cama y toallas', 'Cochera', 'Terraza', 'Vista a la montaña'],
   },
   {
     name: 'Cabaña 3',

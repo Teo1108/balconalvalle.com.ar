@@ -12,18 +12,30 @@ import { SITE_CONFIG } from '@/lib/config';
 const LODGING_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'LodgingBusiness',
+  '@id': 'https://balconalvalle.com.ar/#lodging',
   name: SITE_CONFIG.name,
+  alternateName: ['Balcón al Valle', 'Cabañas Balcón al Valle'],
   description:
     'Cabañas en Valle Grande, dentro del Cañón del Atuel, San Rafael, Mendoza. Alojamiento rural para 3 a 4 personas a 200 metros del Río Atuel, con acceso privado desde el loteo, rodeado de montaña y bosque nativo.',
   url: 'https://balconalvalle.com.ar',
-  image:
+  image: [
     'https://res.cloudinary.com/davjgtfy0/image/upload/f_auto,q_auto/v1790534583/BAVG-homemini.jpg',
+    ...CABINS.filter((cabin) => !cabin.underConstruction).map(
+      (cabin) => cabin.poster ?? cabin.image
+    ),
+  ],
   dateModified: new Date().toISOString().split('T')[0],
   telephone: `+${SITE_CONFIG.whatsapp.number}`,
+  checkinTime: '13:00',
+  checkoutTime: '10:00',
+  numberOfRooms: CABINS.filter((cabin) => !cabin.underConstruction).length,
+  currenciesAccepted: 'ARS, USD',
+  paymentAccepted: 'Mercado Pago, Transferencia bancaria, Efectivo',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Valle Grande, San Rafael',
     addressRegion: 'Mendoza',
+    postalCode: '5600',
     addressCountry: 'AR',
   },
   geo: {
@@ -63,10 +75,14 @@ const LODGING_SCHEMA = {
     'Cochera',
     'Terraza',
     'Aire frío/calor',
+    'Parrilla individual',
+    'Ropa de cama y toallas incluidas',
+    'Vista a la montaña',
     'Acceso privado al Río Atuel desde el loteo (a 200 metros)',
   ].map((name) => ({
     '@type': 'LocationFeatureSpecification',
     name,
+    value: true,
   })),
 };
 
