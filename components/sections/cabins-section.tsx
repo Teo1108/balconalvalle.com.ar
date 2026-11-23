@@ -16,7 +16,7 @@ type Cabin = {
   underConstruction?: boolean;
 };
 
-const CABINS: Cabin[] = [
+export const CABINS: Cabin[] = [
   {
     name: 'Cabaña 1',
     image:

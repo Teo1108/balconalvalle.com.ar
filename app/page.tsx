@@ -1,7 +1,7 @@
 import Navbar from '@/components/layout/navbar';
 import HeroSection from '@/components/sections/hero-section';
 import AboutSection from '@/components/sections/about-section';
-import CabinsSection from '@/components/sections/cabins-section';
+import CabinsSection, { CABINS } from '@/components/sections/cabins-section';
 import GallerySection from '@/components/sections/gallery-section';
 import LocationSection from '@/components/sections/location-section';
 import FaqSection from '@/components/sections/faq-section';
@@ -31,7 +31,32 @@ const LODGING_SCHEMA = {
     latitude: -34.765827966075776,
     longitude: -68.42590132532354,
   },
+  hasMap:
+    'https://www.google.com/maps/search/?api=1&query=-34.765827966075776,-68.42590132532354',
+  petsAllowed: true,
   sameAs: [SITE_CONFIG.social.instagram, SITE_CONFIG.social.facebook],
+  containsPlace: CABINS.filter((cabin) => !cabin.underConstruction).map(
+    (cabin) => ({
+      '@type': 'Accommodation',
+      name: cabin.name,
+      image: cabin.poster ?? cabin.image,
+      occupancy: {
+        '@type': 'QuantitativeValue',
+        maxValue: cabin.capacity,
+        unitCode: 'C62',
+      },
+      bed: {
+        '@type': 'BedDetails',
+        numberOfBeds: cabin.beds,
+      },
+      petsAllowed: true,
+      amenityFeature: cabin.amenities.map((name) => ({
+        '@type': 'LocationFeatureSpecification',
+        name,
+        value: true,
+      })),
+    })
+  ),
   amenityFeature: [
     'Wi-Fi',
     'Cocina equipada',

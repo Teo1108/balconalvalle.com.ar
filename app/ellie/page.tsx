@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: 'Hablá con Ellie — Recepcionista 24/7 | Balcon al Valle Grande',
   description:
     'Consultá disponibilidad y reservá tu cabaña hablando con Ellie, nuestra recepcionista virtual disponible las 24 horas, los 365 días del año.',
+  alternates: {
+    canonical: 'https://balconalvalle.com.ar/ellie',
+  },
   openGraph: {
     title: 'Hablá con Ellie — Recepcionista 24/7',
     description:
