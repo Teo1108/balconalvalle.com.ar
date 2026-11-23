@@ -49,6 +49,7 @@ export const LODGING_SCHEMA = {
   numberOfRooms: CABINS.filter((cabin) => !cabin.underConstruction).length,
   currenciesAccepted: 'ARS, USD',
   paymentAccepted: 'Mercado Pago, Transferencia bancaria, Efectivo',
+  priceRange: 'USD 50 - 75 por noche, según temporada',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Valle Grande, San Rafael',
