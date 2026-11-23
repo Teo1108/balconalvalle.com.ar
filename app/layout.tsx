@@ -1,27 +1,15 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { SITE_CONFIG } from '@/lib/config';
+import {
+  LODGING_SCHEMA,
+  ORGANIZATION_SCHEMA,
+  WEBSITE_SCHEMA,
+} from '@/lib/structured-data';
 
 const inter = Inter({ subsets: ['latin'] });
 
-const WEBSITE_SCHEMA = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: SITE_CONFIG.name,
-  url: 'https://balconalvalle.com.ar',
-  inLanguage: 'es-AR',
-};
-
-const ORGANIZATION_SCHEMA = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: SITE_CONFIG.name,
-  url: 'https://balconalvalle.com.ar',
-  logo: 'https://res.cloudinary.com/davjgtfy0/image/upload/BalconAlValle_ujkc28.ico',
-  telephone: `+${SITE_CONFIG.whatsapp.number}`,
-  sameAs: [SITE_CONFIG.social.instagram, SITE_CONFIG.social.facebook],
-};
+const STRUCTURED_DATA = [WEBSITE_SCHEMA, ORGANIZATION_SCHEMA, LODGING_SCHEMA];
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -43,6 +31,8 @@ export const metadata: Metadata = {
     description:
       'Cabañas en Valle Grande, dentro del Cañón del Atuel, San Rafael, Mendoza. Alojamiento rural para 3 a 4 personas a 200 metros del Río Atuel, con acceso privado desde el loteo, rodeado de montaña y bosque nativo.',
     url: 'https://balconalvalle.com.ar',
+    siteName: 'Balcón al Valle Grande',
+    locale: 'es_AR',
     type: 'website',
     images: [
       {
@@ -61,20 +51,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
-      <body className={inter.className}>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(WEBSITE_SCHEMA) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(ORGANIZATION_SCHEMA),
-          }}
-        />
-        {children}
-      </body>
+    <html lang="es-AR">
+      <head>
+        {STRUCTURED_DATA.map((schema) => (
+          <script
+            key={schema['@type']}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          />
+        ))}
+      </head>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
