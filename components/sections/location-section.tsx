@@ -27,7 +27,7 @@ export default function LocationSection() {
           Balcón al Valle está en el distrito de Valle Grande, dentro del
           Cañón del Atuel, a 15 minutos del centro de San Rafael, Mendoza. Un
           entorno natural privilegiado, rodeado de montañas y bosque nativo,
-          con acceso privado al Río Atuel y fácil llegada desde las
+          a 200 metros del Río Atuel (con acceso privado desde el loteo) y fácil llegada desde las
           principales rutas de la región.
         </p>
         <p className="text-lg text-valle-dark/80 mb-4">

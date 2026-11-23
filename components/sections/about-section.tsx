@@ -21,9 +21,9 @@ const FEATURES = [
   },
   {
     icon: Waves,
-    title: 'Acceso privado al Río Atuel',
+    title: 'A 200 metros del Río Atuel',
     description:
-      'Las cabañas tienen acceso privado al Río Atuel, en plena zona del Cañón del Atuel: rafting, tirolesa y trekking a pocos minutos.',
+      'Estamos a 200 metros del Río Atuel, con acceso privado desde el loteo, en plena zona del Cañón del Atuel: rafting, tirolesa y trekking a pocos minutos.',
   },
 ];
 
@@ -43,8 +43,8 @@ export default function AboutSection() {
         </p>
         <p className="text-lg text-valle-dark/80 mb-16 max-w-2xl mx-auto">
           Estamos en plena zona turística del cañón, con actividades como
-          rafting, tirolesa y trekking a minutos de la cabaña, y acceso
-          privado al Río Atuel para disfrutar del agua sin salir del predio.
+          rafting, tirolesa y trekking a minutos de la cabaña. El Río Atuel
+          está a solo 200 metros, con acceso privado desde el loteo.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {FEATURES.map(({ icon: Icon, title, description }) => (
