@@ -7,6 +7,7 @@ export const SITE_CONFIG = {
   social: {
     instagram: 'https://www.instagram.com/balconalvallegrande/',
     facebook: 'https://www.facebook.com/balconalvalle',
+    booking: 'https://www.booking.com/hotel/ar/balcon-al-valle-grande.es.html',
   },
 } as const;
 

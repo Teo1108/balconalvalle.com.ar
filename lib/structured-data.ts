@@ -24,7 +24,7 @@ export const ORGANIZATION_SCHEMA = {
   url: BASE_URL,
   logo: 'https://res.cloudinary.com/davjgtfy0/image/upload/BalconAlValle_ujkc28.ico',
   telephone: `+${SITE_CONFIG.whatsapp.number}`,
-  sameAs: [SITE_CONFIG.social.instagram, SITE_CONFIG.social.facebook],
+  sameAs: Object.values(SITE_CONFIG.social),
 };
 
 export const LODGING_SCHEMA = {
@@ -64,7 +64,7 @@ export const LODGING_SCHEMA = {
   hasMap:
     'https://www.google.com/maps/search/?api=1&query=-34.765827966075776,-68.42590132532354',
   petsAllowed: true,
-  sameAs: [SITE_CONFIG.social.instagram, SITE_CONFIG.social.facebook],
+  sameAs: Object.values(SITE_CONFIG.social),
   containsPlace: CABINS.filter((cabin) => !cabin.underConstruction).map(
     (cabin) => ({
       '@type': 'Accommodation',
