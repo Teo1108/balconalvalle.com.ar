@@ -44,7 +44,8 @@ export default function AboutSection() {
         <p className="text-lg text-valle-dark/80 mb-16 max-w-2xl mx-auto">
           Estamos en plena zona turística del cañón, con actividades como
           rafting, tirolesa y trekking a minutos de la cabaña. El Río Atuel
-          está a solo 200 metros, con acceso privado desde el loteo.
+          está a solo 200 metros, con acceso privado desde el loteo, y el
+          complejo tiene piscina de 4 x 6 metros.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {FEATURES.map(({ icon: Icon, title, description }) => (

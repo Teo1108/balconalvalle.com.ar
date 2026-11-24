@@ -17,7 +17,7 @@ const FAQS = [
   {
     question: '¿Qué comodidades tienen las cabañas?',
     answer:
-      'Las cabañas cuentan con Wi-Fi, aire frío/calor, cocina equipada, parrilla individual, ropa de cama y toallas incluidas, cochera y terraza con vista a la montaña y al valle.',
+      'Las cabañas cuentan con Wi-Fi, aire frío/calor, cocina equipada, parrilla individual, ropa de cama y toallas incluidas, cochera y terraza con vista a la montaña y al valle. Además, el complejo tiene piscina de 4 x 6 metros y 2 metros de profundidad.',
   },
   {
     question: '¿Aceptan mascotas?',
