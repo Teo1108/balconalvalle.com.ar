@@ -61,17 +61,25 @@ export default function GalleryClient({ cabania1, cabania2 }: Props) {
                 loading="lazy"
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
               />
+              {i === visible.length - 1 && photos.length > visible.length && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/55 text-valle-cream text-2xl font-bold">
+                  +{photos.length - visible.length}
+                </div>
+              )}
             </div>
           ))}
         </div>
 
-        {photos.length > 10 && (
-          <p
-            onClick={() => setLightboxIndex(0)}
-            className="text-center text-valle-sand/70 text-sm cursor-pointer hover:text-valle-sand transition-colors mt-2"
-          >
-            + {photos.length - 10} fotos más — clickeá para ver todas
-          </p>
+        {photos.length > visible.length && (
+          <div className="flex justify-center mt-8">
+            <button
+              type="button"
+              onClick={() => setLightboxIndex(visible.length)}
+              className="px-8 py-3 rounded-full bg-valle-brown text-valle-cream font-semibold shadow-lg hover:brightness-110 transition"
+            >
+              Ver las {photos.length} fotos
+            </button>
+          </div>
         )}
 
         <Lightbox
